@@ -1,0 +1,308 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #140f0b;
+  --panel: rgba(20, 13, 7, 0.78);
+  --text: #f8ecd2;
+  --gold: #e5b15b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.landing-scene {
+  min-height: 100vh;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background-image:
+    linear-gradient(to bottom, rgba(10, 6, 4, 0.2), rgba(10, 6, 4, 0.75)),
+    radial-gradient(circle at 50% 20%, rgba(46, 31, 21, 0.8) 0%, rgba(20, 15, 11, 0.9) 55%),
+    url('/images/tavern-entrance-bg.svg');
+  background-size: cover, cover, cover;
+  background-position: center, center, center;
+}
+
+.mist {
+  position: absolute;
+  inset: auto -20% 8%;
+  height: 180px;
+  background: radial-gradient(ellipse at center, rgba(220, 220, 220, 0.2), transparent 70%);
+  filter: blur(8px);
+  animation: drift 6s ease-in-out infinite;
+}
+
+.hero-panel {
+  position: absolute;
+  top: 8%;
+  text-align: center;
+  padding: 1rem;
+  z-index: 3;
+}
+
+.hero-eyebrow {
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title {
+  font-size: clamp(1.5rem, 4vw, 2.8rem);
+  margin: 0;
+}
+
+.hero-desc {
+  margin-top: 0.6rem;
+  opacity: 0.9;
+}
+
+.door-wrap {
+  position: relative;
+  width: min(380px, 80vw);
+  height: min(520px, 70vh);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.door-frame {
+  position: absolute;
+  inset: 0;
+  border: 10px solid #4d2f1d;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #2b1a11, #140c08);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+}
+
+.door {
+  position: absolute;
+  top: 10px;
+  width: calc(50% - 10px);
+  height: calc(100% - 20px);
+  background: repeating-linear-gradient(
+    90deg,
+    #6a4228,
+    #6a4228 14px,
+    #734a2d 14px,
+    #734a2d 28px
+  );
+  transition: transform 1.3s ease;
+}
+
+.left {
+  left: 10px;
+  transform-origin: left center;
+}
+
+.right {
+  right: 10px;
+  transform-origin: right center;
+}
+
+.left.open {
+  transform: perspective(900px) rotateY(-105deg);
+}
+
+.right.open {
+  transform: perspective(900px) rotateY(105deg);
+}
+
+/* entrance label removed: click the whole door to enter */
+
+.torch {
+  position: absolute;
+  top: 30%;
+  width: 22px;
+  height: 90px;
+  background: linear-gradient(to bottom, #7c4e2f, #2b1a10);
+}
+
+.torch::before {
+  content: "";
+  position: absolute;
+  top: -22px;
+  left: -6px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 189, 92, 0.95), rgba(255, 120, 0, 0.2), transparent 70%);
+  animation: flicker 0.25s infinite alternate;
+}
+
+.torch-left { left: 14%; }
+.torch-right { right: 14%; }
+
+.tavern-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(to bottom, #1d120c, #0e0906);
+}
+
+.tavern-header {
+  max-width: 900px;
+  margin: 0 auto 1rem;
+}
+
+.tavern-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.tavern-card {
+  background: rgba(44, 29, 20, 0.8);
+  border: 1px solid rgba(229, 177, 91, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.stack-sm {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+input,
+textarea,
+select,
+button {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(229, 177, 91, 0.35);
+  background: rgba(13, 8, 5, 0.72);
+  color: var(--text);
+  padding: 0.55rem 0.65rem;
+}
+
+button {
+  width: auto;
+  cursor: pointer;
+  color: #2a180d;
+  background: var(--gold);
+  border: none;
+  font-weight: 700;
+}
+
+.feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.feed li {
+  border: 1px solid rgba(229, 177, 91, 0.2);
+  background: rgba(10, 6, 4, 0.5);
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+}
+
+.single-col {
+  grid-template-columns: 1fr;
+}
+
+.tavern-hub {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  background-image:
+    linear-gradient(to bottom, rgba(11, 7, 5, 0.55), rgba(7, 4, 3, 0.85)),
+    url('/images/tavern-hall-bg.svg');
+  background-size: cover;
+  background-position: center;
+}
+
+.tavern-scene {
+  position: relative;
+  width: min(1100px, 96vw);
+  min-height: 76vh;
+  border: 1px solid rgba(229, 177, 91, 0.25);
+  border-radius: 14px;
+  background-image:
+    linear-gradient(to bottom, rgba(53, 33, 22, 0.66), rgba(20, 12, 8, 0.85)),
+    url('/images/tavern-interior-bg.svg');
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.hub-title {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--gold);
+  font-size: 1.25rem;
+}
+
+.zone {
+  position: absolute;
+  border: 1px solid rgba(229, 177, 91, 0.35);
+  border-radius: 12px;
+  background: rgba(15, 9, 6, 0.55);
+  backdrop-filter: blur(2px);
+  padding: 1rem;
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.zone:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.left-placeholder {
+  left: 2.2rem;
+  top: 28%;
+  width: 250px;
+  min-height: 250px;
+}
+
+.bar-zone {
+  left: 50%;
+  bottom: 1.8rem;
+  transform: translateX(-50%);
+  width: min(420px, 68vw);
+  min-height: 120px;
+  text-align: center;
+}
+
+.board-zone {
+  right: 2rem;
+  top: 34%;
+  width: 240px;
+  min-height: 180px;
+}
+
+@keyframes flicker {
+  from { transform: scale(0.95); opacity: 0.85; }
+  to { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes drift {
+  from { transform: translateX(-3%); }
+  to { transform: translateX(3%); }
+}
