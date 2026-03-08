@@ -22,9 +22,9 @@ export default function Home() {
       <div className="torch torch-right" />
 
       <section className="hero-panel">
-        <p className="hero-eyebrow">The Old Oak Tavern</p>
-        <h1 className="hero-title">中世纪酒馆 · NFT世界入口</h1>
-        <p className="hero-desc">点击酒馆大门进入。</p>
+        <p className="hero-eyebrow">Knight Wisdom</p>
+        <h1 className="hero-title">中世纪古堡 Club · NFT 世界入口</h1>
+        <p className="hero-desc">推开大门，进入骑士俱乐部。</p>
       </section>
 
       <button onClick={openDoor} className="door-wrap" aria-label="Enter the tavern">
