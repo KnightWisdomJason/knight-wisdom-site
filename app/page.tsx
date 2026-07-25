@@ -61,6 +61,7 @@ export default function Home() {
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem("knightwisdom-language") as Language | null;
     const initialLanguage = savedLanguage ?? (navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en");
+    document.documentElement.lang = initialLanguage;
     setLanguage(initialLanguage);
   }, []);
 
