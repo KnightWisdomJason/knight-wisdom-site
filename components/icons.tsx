@@ -1,0 +1,3 @@
+export function ArrowRight() { return <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 8h10M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>; }
+export function Sparkles() { return <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m8 1 .9 4.1L13 6l-4.1.9L8 11l-.9-4.1L3 6l4.1-.9L8 1ZM13 11l.4 1.6L15 13l-1.6.4L13 15l-.4-1.6L11 13l1.6-.4L13 11Z" fill="currentColor" /></svg>; }
+export function Check() { return <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.2 8.4 3 3 6.6-6.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>; }

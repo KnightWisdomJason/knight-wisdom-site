@@ -1,0 +1,2 @@
+type GuideCardProps = { category: string; title: string; time: string; index: number };
+export function GuideCard({ category, title, time, index }: GuideCardProps) { return <a className="guide-card" href="#"><div className={`guide-art art-${index}`}><span>{index === 0 ? "✦" : index === 1 ? "↗" : "◌"}</span></div><div className="guide-meta">{category} <i>•</i> {time}</div><h3>{title}</h3><span className="guide-link">Read guide <span>→</span></span></a>; }

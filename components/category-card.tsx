@@ -1,0 +1,2 @@
+type CategoryCardProps = { icon: string; title: string; description: string; tools: string[] };
+export function CategoryCard({ icon, title, description, tools }: CategoryCardProps) { return <a className="category-card" href="#"><span className="category-icon">{icon}</span><h3>{title}</h3><p>{description}</p><ul>{tools.map((tool) => <li key={tool}>{tool}</li>)}</ul><span className="card-arrow">↗</span></a>; }
