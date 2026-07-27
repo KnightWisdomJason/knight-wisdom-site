@@ -11,9 +11,9 @@ type Language = "en" | "zh-CN";
 
 const content = {
   en: {
-    navigation: { blog: "Blog", computer: "Computer tools", documents: "Document tools", images: "Image tools", business: "Business tools" },
+    navigation: { blog: "Blog", computer: "Computer tools", pdf: "PDF", images: "Image tools", business: "Business tools" },
     languageLabel: "Choose language",
-    categories: ["All tools", "Computer", "Documents", "Images", "Business"],
+    categories: ["All tools", "Computer", "PDF", "Images", "Business"],
     toolsLabel: "THE KNIGHT WISDOM TOOLBOX",
     toolsTitle: "A useful tool for every task.",
     toolsText: "Simple, clear tools for the tasks you want to finish quickly. More are on the way.",
@@ -22,11 +22,12 @@ const content = {
       { group: "computer-tools", icon: "#", title: "Password Generator", description: "Create strong passwords in a few seconds." },
       { group: "computer-tools", icon: "◌", title: "QR Code Generator", description: "Turn any link or text into a clean QR code." },
       { group: "computer-tools", icon: "↺", title: "UUID Generator", description: "Generate unique IDs for your projects and data." },
-      { group: "document-tools", icon: "▤", title: "Merge PDF", description: "Combine documents into one organized PDF." },
-      { group: "document-tools", icon: "⇄", title: "PDF to Word", description: "Turn PDF documents into editable Word files.", href: "/tools/pdf-to-word" },
-      { group: "document-tools", icon: "✂", title: "Split PDF", description: "Separate pages into the files you need." },
-      { group: "document-tools", icon: "✎", title: "Edit PDF", description: "Add a note to a PDF directly in your browser.", href: "/tools/pdf-editor", badge: "NEW" },
-      { group: "document-tools", icon: "≋", title: "Compress PDF", description: "Reduce file size while keeping documents clear." },
+      { group: "pdf-tools", icon: "⇄", title: "PDF to Word", description: "Turn PDF documents into editable Word files.", href: "/tools/pdf-to-word" },
+      { group: "pdf-tools", icon: "▣", title: "Word to PDF", description: "Turn Word documents into clean PDF files.", href: "/tools/word-to-pdf" },
+      { group: "pdf-tools", icon: "✎", title: "Edit PDF", description: "Add a note to a PDF directly in your browser.", href: "/tools/pdf-editor", badge: "NEW" },
+      { group: "pdf-tools", icon: "▤", title: "Merge PDF", description: "Combine documents into one organized PDF." },
+      { group: "pdf-tools", icon: "✂", title: "Split PDF", description: "Separate pages into the files you need." },
+      { group: "pdf-tools", icon: "≋", title: "Compress PDF", description: "Reduce file size while keeping documents clear." },
       { group: "image-tools", icon: "◒", title: "Image Compressor", description: "Make images lighter without losing their quality." },
       { group: "image-tools", icon: "↔", title: "Image Resizer", description: "Resize images for web, work, and sharing." },
       { group: "image-tools", icon: "▧", title: "Image Converter", description: "Convert between the formats you use every day." },
@@ -36,7 +37,6 @@ const content = {
       { group: "business-tools", icon: "±", title: "Break-even Calculator", description: "See when a business idea reaches break-even." },
       { group: "business-tools", icon: "¤", title: "Invoice Generator", description: "Create a clear invoice for your next client." },
       { group: "computer-tools", icon: "Aa", title: "Word Counter", description: "Count words, characters, and reading time." },
-      { group: "document-tools", icon: "▣", title: "Word to PDF", description: "Turn Word documents into clean PDF files.", href: "/tools/word-to-pdf" },
       { group: "image-tools", icon: "✦", title: "Watermark Image", description: "Add a simple watermark to your visual work." },
       { group: "business-tools", icon: "₿", title: "Loan Calculator", description: "Plan repayments with a clear monthly estimate." },
     ],
@@ -56,9 +56,9 @@ const content = {
     footer: { tagline: "Thoughtful tools and ideas for a more capable day.", rights: "All rights reserved.", privacy: "Privacy", terms: "Terms", contact: "Contact" },
   },
   "zh-CN": {
-    navigation: { blog: "博客", computer: "计算机工具", documents: "文档工具", images: "图片工具", business: "商业工具" },
+    navigation: { blog: "博客", computer: "计算机工具", pdf: "PDF", images: "图片工具", business: "商业工具" },
     languageLabel: "选择语言",
-    categories: ["全部工具", "计算机", "文档", "图片", "商业"],
+    categories: ["全部工具", "计算机", "PDF", "图片", "商业"],
     toolsLabel: "KNIGHT WISDOM 工具箱",
     toolsTitle: "每一项任务，都有实用工具。",
     toolsText: "为你希望快速完成的任务提供简单、清晰的工具。更多工具正在准备中。",
@@ -67,11 +67,12 @@ const content = {
       { group: "computer-tools", icon: "#", title: "密码生成器", description: "几秒钟内创建高强度密码。" },
       { group: "computer-tools", icon: "◌", title: "二维码生成器", description: "将链接或文本变成简洁二维码。" },
       { group: "computer-tools", icon: "↺", title: "UUID 生成器", description: "为项目和数据生成唯一 ID。" },
-      { group: "document-tools", icon: "▤", title: "PDF 合并", description: "将文档合并为一个井然有序的 PDF。" },
-      { group: "document-tools", icon: "⇄", title: "PDF 转 Word", description: "将 PDF 文档转为可编辑的 Word 文件。", href: "/tools/pdf-to-word" },
-      { group: "document-tools", icon: "✂", title: "PDF 拆分", description: "将页面拆分为所需的独立文件。" },
-      { group: "document-tools", icon: "✎", title: "PDF 在线编辑", description: "直接在浏览器中为 PDF 添加文字。", href: "/tools/pdf-editor", badge: "新功能" },
-      { group: "document-tools", icon: "≋", title: "PDF 压缩", description: "缩小文件体积，保持文档清晰。" },
+      { group: "pdf-tools", icon: "⇄", title: "PDF 转 Word", description: "将 PDF 文档转为可编辑的 Word 文件。", href: "/tools/pdf-to-word" },
+      { group: "pdf-tools", icon: "▣", title: "Word 转 PDF", description: "将 Word 文档转为清晰的 PDF 文件。", href: "/tools/word-to-pdf" },
+      { group: "pdf-tools", icon: "✎", title: "PDF 在线编辑", description: "直接在浏览器中为 PDF 添加文字。", href: "/tools/pdf-editor", badge: "新功能" },
+      { group: "pdf-tools", icon: "▤", title: "PDF 合并", description: "将文档合并为一个井然有序的 PDF。" },
+      { group: "pdf-tools", icon: "✂", title: "PDF 拆分", description: "将页面拆分为所需的独立文件。" },
+      { group: "pdf-tools", icon: "≋", title: "PDF 压缩", description: "缩小文件体积，保持文档清晰。" },
       { group: "image-tools", icon: "◒", title: "图片压缩", description: "不损失画质，让图片更轻巧。" },
       { group: "image-tools", icon: "↔", title: "图片尺寸调整", description: "为网页、工作和分享调整图片尺寸。" },
       { group: "image-tools", icon: "▧", title: "图片格式转换", description: "转换日常使用的图片格式。" },
@@ -81,7 +82,6 @@ const content = {
       { group: "business-tools", icon: "±", title: "盈亏平衡计算器", description: "了解业务何时达到盈亏平衡。" },
       { group: "business-tools", icon: "¤", title: "发票生成器", description: "为下一位客户创建清晰的发票。" },
       { group: "computer-tools", icon: "Aa", title: "字数统计", description: "统计字数、字符和阅读时间。" },
-      { group: "document-tools", icon: "▣", title: "Word 转 PDF", description: "将 Word 文档转为清晰的 PDF 文件。", href: "/tools/word-to-pdf" },
       { group: "image-tools", icon: "✦", title: "图片加水印", description: "为你的视觉作品添加简洁水印。" },
       { group: "business-tools", icon: "₿", title: "贷款计算器", description: "清楚估算每月还款，做好规划。" },
     ],
@@ -108,8 +108,9 @@ export default function Home() {
   const copy = content[language];
 
   useEffect(() => {
+    const requestedLanguage = new URLSearchParams(window.location.search).get("lang");
     const savedLanguage = window.localStorage.getItem("knightwisdom-language") as Language | null;
-    const initialLanguage = savedLanguage ?? (navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en");
+    const initialLanguage = requestedLanguage === "en" || requestedLanguage === "zh-CN" ? requestedLanguage : savedLanguage ?? (navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en");
     document.documentElement.lang = initialLanguage;
     setLanguage(initialLanguage);
   }, []);
@@ -117,10 +118,11 @@ export default function Home() {
   const changeLanguage = (nextLanguage: Language) => {
     window.localStorage.setItem("knightwisdom-language", nextLanguage);
     document.documentElement.lang = nextLanguage;
+    window.history.replaceState(null, "", `${window.location.pathname}?lang=${nextLanguage}${window.location.hash}`);
     setLanguage(nextLanguage);
   };
 
-  const groups = ["all", "computer-tools", "document-tools", "image-tools", "business-tools"];
+  const groups = ["all", "computer-tools", "pdf-tools", "image-tools", "business-tools"];
   const visibleTools = activeCategory === 0 ? copy.tools : copy.tools.filter((tool) => tool.group === groups[activeCategory]);
 
   return (
@@ -131,7 +133,7 @@ export default function Home() {
         <div className="section-shell">
           <div className="tools-heading"><p className="label">{copy.toolsLabel}</p><h2 id="tools-title">{copy.toolsTitle}</h2><p>{copy.toolsText}</p></div>
           <div className="tool-filters" aria-label="Tool categories">{copy.categories.map((category, index) => <button key={category} className={activeCategory === index ? "active" : ""} onClick={() => setActiveCategory(index)}>{category}</button>)}</div>
-          <div className="tool-grid">{visibleTools.map((tool) => <ToolCard key={tool.title} {...tool} />)}</div>
+          <div className="tool-grid">{visibleTools.map((tool) => { const href = "href" in tool ? tool.href : undefined; return <ToolCard key={tool.title} {...tool} href={href ? `${href}?lang=${language}` : undefined} />; })}</div>
         </div>
       </section>
 

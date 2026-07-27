@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     await writeFile(path.join(workDir, inputName), Buffer.from(await file.arrayBuffer()));
     const convertFilter = kind === "pdf-to-word" ? "docx:Office Open XML Text" : "pdf:writer_pdf_Export";
     const profileUrl = pathToFileURL(path.join(workDir, "libreoffice-profile")).href;
-    await run(officeBinary, [`-env:UserInstallation=${profileUrl}`, "--headless", "--convert-to", convertFilter, "--outdir", workDir, path.join(workDir, inputName)], { timeout: 120000, windowsHide: true });
+    await run(officeBinary, [`-env:UserInstallation=${profileUrl}`, "--headless", "--convert-to", convertFilter, "--outdir", workDir, path.join(workDir, inputName)], { timeout: 120000, windowsHide: true, env: { ...process.env, HOME: workDir, TMPDIR: workDir } });
     const output = await readFile(path.join(workDir, outputName));
     const downloadName = `${path.basename(file.name, extension)}.${outputType}`;
     return new Response(output, { headers: { "Content-Type": outputType === "pdf" ? "application/pdf" : "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "Content-Disposition": `attachment; filename="${downloadName}"`, "X-Output-Filename": downloadName } });
