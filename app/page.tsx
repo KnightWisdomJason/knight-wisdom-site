@@ -5,19 +5,14 @@ import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { GuideCard } from "@/components/guide-card";
 import { ToolCard } from "@/components/tool-card";
-import { ArrowRight, Sparkles } from "@/components/icons";
+import { ArrowRight } from "@/components/icons";
 
 type Language = "en" | "zh-CN";
 
 const content = {
   en: {
-    navigation: { computer: "Computer tools", documents: "Document tools", images: "Image tools", business: "Business tools" },
+    navigation: { blog: "Blog", computer: "Computer tools", documents: "Document tools", images: "Image tools", business: "Business tools" },
     languageLabel: "Choose language",
-    eyebrow: "ONE HOME FOR USEFUL WORK",
-    title: <>The useful tools you need.<br /><em>Clear guides when you need them.</em></>,
-    intro: "Knight Wisdom brings together simple online tools, practical explainers, and thoughtful articles for work, business, and everyday life.",
-    primaryCta: "Explore tools",
-    secondaryCta: "Read the blog",
     categories: ["All tools", "Computer", "Documents", "Images", "Business"],
     toolsLabel: "THE KNIGHT WISDOM TOOLBOX",
     toolsTitle: "A useful tool for every task.",
@@ -54,20 +49,14 @@ const content = {
       { category: "PRACTICAL WORK", title: "A simple workflow for handling everyday files", time: "5 min read" },
       { category: "COMING SOON", title: "Clear perspectives on the topics people are talking about", time: "New series" },
     ],
-    contactLabel: "LET&apos;S WORK TOGETHER",
     contactTitle: "Have an idea, partnership, or useful resource to share?",
-    contactText: "We&apos;re building Knight Wisdom carefully and would love to hear from people who want to make it more useful.",
+    contactText: "Contact Knight Wisdom at knightwisdomclub@gmail.com.",
     contactCta: "Email Knight Wisdom",
-    footer: { tagline: "Thoughtful tools and ideas for a more capable day.", collaboration: "Collaborate with us", rights: "All rights reserved.", privacy: "Privacy", terms: "Terms", contact: "Contact" },
+    footer: { tagline: "Thoughtful tools and ideas for a more capable day.", rights: "All rights reserved.", privacy: "Privacy", terms: "Terms", contact: "Contact" },
   },
   "zh-CN": {
-    navigation: { computer: "计算机工具", documents: "文档工具", images: "图片工具", business: "商业工具" },
+    navigation: { blog: "博客", computer: "计算机工具", documents: "文档工具", images: "图片工具", business: "商业工具" },
     languageLabel: "选择语言",
-    eyebrow: "实用工作的一站式空间",
-    title: <>完成任务的实用工具。<br /><em>需要时给你清晰的思路。</em></>,
-    intro: "Knight Wisdom 汇集简洁的在线工具、实用讲解和有深度的文章，服务于工作、商业和日常生活中的每一个实际问题。",
-    primaryCta: "浏览工具",
-    secondaryCta: "阅读博客",
     categories: ["全部工具", "计算机", "文档", "图片", "商业"],
     toolsLabel: "KNIGHT WISDOM 工具箱",
     toolsTitle: "每一项任务，都有实用工具。",
@@ -104,11 +93,10 @@ const content = {
       { category: "实用工作", title: "处理日常文件的一套简单工作流", time: "5 分钟阅读" },
       { category: "即将推出", title: "用清晰的观点解读大家正在讨论的话题", time: "新栏目" },
     ],
-    contactLabel: "一起合作",
     contactTitle: "有想法、合作机会，或有价值的资源想分享？",
-    contactText: "我们正在认真打造 Knight Wisdom，期待与同样希望让它更有用的人交流。",
+    contactText: "请通过 knightwisdomclub@gmail.com 联系 Knight Wisdom。",
     contactCta: "邮件联系 Knight Wisdom",
-    footer: { tagline: "让每一天都更有能力的实用工具与想法。", collaboration: "与我们合作", rights: "保留所有权利。", privacy: "隐私", terms: "条款", contact: "联系" },
+    footer: { tagline: "让每一天都更有能力的实用工具与想法。", rights: "保留所有权利。", privacy: "隐私", terms: "条款", contact: "联系" },
   },
 } as const;
 
@@ -136,13 +124,6 @@ export default function Home() {
   return (
     <main id="top">
       <Header language={language} onLanguageChange={changeLanguage} copy={{ navigation: copy.navigation, languageLabel: copy.languageLabel }} />
-      <section className="hero section-shell" aria-labelledby="hero-title">
-        <div className="hero-glow" aria-hidden="true" />
-        <div className="eyebrow"><Sparkles /> {copy.eyebrow}</div>
-        <h1 id="hero-title">{copy.title}</h1>
-        <p className="hero-copy">{copy.intro}</p>
-        <div className="hero-actions"><a className="button button-primary" href="#tools">{copy.primaryCta} <ArrowRight /></a><a className="button button-secondary" href="#blog">{copy.secondaryCta}</a></div>
-      </section>
 
       <section className="tools-section" id="tools" aria-labelledby="tools-title">
         <div className="section-shell">
@@ -158,7 +139,7 @@ export default function Home() {
       </section>
 
       <section className="section-shell contact-section">
-        <p className="label">{copy.contactLabel}</p><div><h2>{copy.contactTitle}</h2><p>{copy.contactText}</p></div><a className="button button-primary" href="mailto:knightwisdomclub@gmail.com">{copy.contactCta} <ArrowRight /></a>
+        <div><h2>{copy.contactTitle}</h2><p>{copy.contactText}</p></div><a className="button button-primary" href="mailto:knightwisdomclub@gmail.com">{copy.contactCta} <ArrowRight /></a>
       </section>
       <Footer copy={copy.footer} />
     </main>
