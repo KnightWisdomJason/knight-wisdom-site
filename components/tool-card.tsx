@@ -3,11 +3,12 @@ type ToolCardProps = {
   title: string;
   description: string;
   badge?: string;
+  href?: string;
 };
 
-export function ToolCard({ icon, title, description, badge }: ToolCardProps) {
+export function ToolCard({ icon, title, description, badge, href = "#" }: ToolCardProps) {
   return (
-    <a className="tool-card" href="#" aria-label={title}>
+    <a className="tool-card" href={href} aria-label={title}>
       <span className="tool-icon">{icon}</span>
       {badge && <span className="tool-badge">{badge}</span>}
       <h3>{title}</h3>
