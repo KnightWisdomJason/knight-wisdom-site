@@ -5,6 +5,7 @@ import { tmpdir } from "os";
 import path from "path";
 import { pathToFileURL } from "url";
 import { promisify } from "util";
+import { findGeneratedOutput } from "@/lib/conversion-output";
 
 export const runtime = "nodejs";
 
@@ -30,6 +31,14 @@ async function runLibreOffice(args: string[], options: Parameters<typeof run>[2]
   throw lastError ?? new Error("LibreOffice executable was not found.");
 }
 
+function diagnosticOutput(value: unknown) {
+  return typeof value === "string" ? value.trim().slice(0, 2000) : "";
+}
+
+function conversionError(message: string, details: string, status = 422) {
+  return Response.json({ error: message, details }, { status });
+}
+
 export async function POST(request: Request) {
   const data = await request.formData();
   const file = data.get("file");
@@ -44,13 +53,22 @@ export async function POST(request: Request) {
   const workDir = await mkdtemp(path.join(tmpdir(), "knightwisdom-"));
   const inputName = `source${extension}`;
   const outputType = kind === "pdf-to-word" ? "docx" : "pdf";
-  const outputName = `source.${outputType}`;
   try {
-    await writeFile(path.join(workDir, inputName), Buffer.from(await file.arrayBuffer()));
+    const inputPath = path.join(workDir, inputName);
+    await writeFile(inputPath, Buffer.from(await file.arrayBuffer()));
     const convertFilter = kind === "pdf-to-word" ? "docx:Office Open XML Text" : "pdf:writer_pdf_Export";
     const profileUrl = pathToFileURL(path.join(workDir, "libreoffice-profile")).href;
-    await runLibreOffice([`-env:UserInstallation=${profileUrl}`, "--headless", "--convert-to", convertFilter, "--outdir", workDir, path.join(workDir, inputName)], { timeout: 120000, windowsHide: true, env: { ...process.env, HOME: workDir, TMPDIR: workDir } });
-    const output = await readFile(path.join(workDir, outputName));
+    const importFilter = kind === "pdf-to-word" ? ["--infilter=writer_pdf_import"] : [];
+    const result = await runLibreOffice([`-env:UserInstallation=${profileUrl}`, "--headless", ...importFilter, "--convert-to", convertFilter, "--outdir", workDir, inputPath], { timeout: 120000, windowsHide: true, env: { ...process.env, HOME: workDir, TMPDIR: workDir } });
+    const generatedPath = await findGeneratedOutput(workDir, outputType, inputPath);
+    const outputDetails = [diagnosticOutput(result.stdout), diagnosticOutput(result.stderr)].filter(Boolean).join("\n");
+    if (!generatedPath) {
+      const message = kind === "pdf-to-word"
+        ? "LibreOffice did not create a DOCX file for this PDF. PDF to DOCX is not reliable for every PDF with LibreOffice; a dedicated conversion engine may be required."
+        : "LibreOffice did not create a PDF file for this Word document.";
+      return conversionError(message, outputDetails || "LibreOffice exited without creating a matching output file.");
+    }
+    const output = await readFile(generatedPath);
     const downloadName = `${path.basename(file.name, extension)}.${outputType}`;
     return new Response(output, { headers: { "Content-Type": outputType === "pdf" ? "application/pdf" : "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "Content-Disposition": `attachment; filename="${downloadName}"`, "X-Output-Filename": downloadName } });
   } catch (error) {
@@ -58,6 +76,7 @@ export async function POST(request: Request) {
     const message = error instanceof Error && "code" in error && error.code === "ENOENT"
       ? "LibreOffice is not available to the website service."
       : "The converter could not process this file. Please check the server logs and try again.";
-    return Response.json({ error: message }, { status: 503 });
+    const details = error && typeof error === "object" ? [diagnosticOutput("stdout" in error ? error.stdout : ""), diagnosticOutput("stderr" in error ? error.stderr : "")].filter(Boolean).join("\n") : "";
+    return conversionError(message, details || (error instanceof Error ? error.message : "Unknown conversion error."), 503);
   } finally { await rm(workDir, { recursive: true, force: true }); }
 }

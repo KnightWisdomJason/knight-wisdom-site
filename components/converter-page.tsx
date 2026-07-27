@@ -52,7 +52,7 @@ export function ConverterPage({ kind }: { kind: ConverterKind }) {
       const response = await fetch("/api/convert", { method: "POST", body });
       if (!response.ok) {
         const result = await response.json().catch(() => null);
-        throw new Error(result?.error ?? "Conversion failed");
+        throw new Error([result?.error, result?.details].filter(Boolean).join("\n\n") || "Conversion failed");
       }
       const download = URL.createObjectURL(await response.blob());
       const link = document.createElement("a");
