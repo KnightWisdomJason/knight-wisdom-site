@@ -1,4 +1,5 @@
 import { execFile } from "child_process";
+import { existsSync } from "fs";
 import { mkdtemp, readFile, rm, writeFile } from "fs/promises";
 import { tmpdir } from "os";
 import path from "path";
@@ -9,7 +10,25 @@ export const runtime = "nodejs";
 
 const run = promisify(execFile);
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
-const officeBinary = process.env.LIBREOFFICE_BIN || "soffice";
+const officeCandidates = [
+  process.env.LIBREOFFICE_BIN,
+  "/usr/bin/soffice",
+  "/usr/bin/libreoffice",
+  "soffice",
+  "libreoffice",
+].filter((candidate): candidate is string => Boolean(candidate));
+
+async function runLibreOffice(args: string[], options: Parameters<typeof run>[2]) {
+  let lastError: unknown;
+  for (const candidate of officeCandidates) {
+    if (candidate.startsWith("/") && !existsSync(candidate)) continue;
+    try { return await run(candidate, args, options); } catch (error) {
+      lastError = error;
+      if (!(error instanceof Error) || !("code" in error) || error.code !== "ENOENT") throw error;
+    }
+  }
+  throw lastError ?? new Error("LibreOffice executable was not found.");
+}
 
 export async function POST(request: Request) {
   const data = await request.formData();
@@ -30,7 +49,7 @@ export async function POST(request: Request) {
     await writeFile(path.join(workDir, inputName), Buffer.from(await file.arrayBuffer()));
     const convertFilter = kind === "pdf-to-word" ? "docx:Office Open XML Text" : "pdf:writer_pdf_Export";
     const profileUrl = pathToFileURL(path.join(workDir, "libreoffice-profile")).href;
-    await run(officeBinary, [`-env:UserInstallation=${profileUrl}`, "--headless", "--convert-to", convertFilter, "--outdir", workDir, path.join(workDir, inputName)], { timeout: 120000, windowsHide: true, env: { ...process.env, HOME: workDir, TMPDIR: workDir } });
+    await runLibreOffice([`-env:UserInstallation=${profileUrl}`, "--headless", "--convert-to", convertFilter, "--outdir", workDir, path.join(workDir, inputName)], { timeout: 120000, windowsHide: true, env: { ...process.env, HOME: workDir, TMPDIR: workDir } });
     const output = await readFile(path.join(workDir, outputName));
     const downloadName = `${path.basename(file.name, extension)}.${outputType}`;
     return new Response(output, { headers: { "Content-Type": outputType === "pdf" ? "application/pdf" : "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "Content-Disposition": `attachment; filename="${downloadName}"`, "X-Output-Filename": downloadName } });
