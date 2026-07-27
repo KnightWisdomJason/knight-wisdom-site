@@ -11,13 +11,13 @@ type ConverterKind = "pdf-to-word" | "word-to-pdf";
 const copy = {
   en: {
     navigation: { blog: "Blog", computer: "Computer tools", pdf: "PDF", images: "Image tools", business: "Business tools" }, languageLabel: "Choose language",
-    uploadLabel: "SELECT A FILE", drop: "Drop your file here", choose: "Choose file", supported: "or choose a file from your device", convert: "Convert now", converting: "Converting…", another: "Convert another file", privacy: "Your file is processed for conversion and is not kept after the request is complete.", back: "All tools", error: "We could not convert that file. Please check the file and try again.", footer: { tagline: "Thoughtful tools and ideas for a more capable day.", rights: "All rights reserved.", privacy: "Privacy", terms: "Terms", contact: "Contact" },
+    uploadLabel: "SELECT A FILE", drop: "Drop your file here", choose: "Choose file", supported: "or choose a file from your device", convert: "Convert now", converting: "Converting…", another: "Convert another file", privacy: "Your file is processed for conversion and is not kept after the request is complete.", back: "All tools", error: "We could not convert that file. Please check the file and try again.", success: "Conversion complete", successText: "Your file is ready. Download it when you are ready.", downloadWord: "Download Word file", downloadPdf: "Download PDF file", footer: { tagline: "Thoughtful tools and ideas for a more capable day.", rights: "All rights reserved.", privacy: "Privacy", terms: "Terms", contact: "Contact" },
     "pdf-to-word": { title: "PDF to Word", intro: "Turn a PDF into an editable Word document.", fileHint: "PDF files up to 20 MB", accept: ".pdf,application/pdf" },
     "word-to-pdf": { title: "Word to PDF", intro: "Convert a Word document into a clean, shareable PDF.", fileHint: "DOC and DOCX files up to 20 MB", accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
   },
   "zh-CN": {
     navigation: { blog: "博客", computer: "计算机工具", pdf: "PDF", images: "图片工具", business: "商业工具" }, languageLabel: "选择语言",
-    uploadLabel: "选择文件", drop: "将文件拖放到这里", choose: "选择文件", supported: "或从你的设备中选择文件", convert: "开始转换", converting: "正在转换…", another: "转换另一个文件", privacy: "文件仅用于完成本次转换，请求结束后不会保留。", back: "全部工具", error: "暂时无法转换该文件，请检查文件后重试。", footer: { tagline: "让每一天都更有能力的实用工具与想法。", rights: "保留所有权利。", privacy: "隐私", terms: "条款", contact: "联系" },
+    uploadLabel: "选择文件", drop: "将文件拖放到这里", choose: "选择文件", supported: "或从你的设备中选择文件", convert: "开始转换", converting: "正在转换…", another: "转换另一个文件", privacy: "文件仅用于完成本次转换，请求结束后不会保留。", back: "全部工具", error: "暂时无法转换该文件，请检查文件后重试。", success: "转换成功", successText: "文件已经准备好，请在需要时手动下载。", downloadWord: "下载 Word 文件", downloadPdf: "下载 PDF 文件", footer: { tagline: "让每一天都更有能力的实用工具与想法。", rights: "保留所有权利。", privacy: "隐私", terms: "条款", contact: "联系" },
     "pdf-to-word": { title: "PDF 转 Word", intro: "将 PDF 转为可编辑的 Word 文档。", fileHint: "支持最大 20 MB 的 PDF 文件", accept: ".pdf,application/pdf" },
     "word-to-pdf": { title: "Word 转 PDF", intro: "将 Word 文档转换为清晰、便于分享的 PDF。", fileHint: "支持最大 20 MB 的 DOC 和 DOCX 文件", accept: ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
   },
@@ -28,6 +28,7 @@ export function ConverterPage({ kind }: { kind: ConverterKind }) {
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "converting" | "error">("idle");
   const [error, setError] = useState("");
+  const [result, setResult] = useState<{ url: string; filename: string } | null>(null);
   const text = copy[language];
   const tool = text[kind];
 
@@ -40,7 +41,7 @@ export function ConverterPage({ kind }: { kind: ConverterKind }) {
   }, []);
 
   const changeLanguage = (next: Language) => { window.localStorage.setItem("knightwisdom-language", next); document.documentElement.lang = next; window.history.replaceState(null, "", `${window.location.pathname}?lang=${next}`); setLanguage(next); };
-  const selectFile = (event: ChangeEvent<HTMLInputElement>) => { setFile(event.target.files?.[0] ?? null); setStatus("idle"); setError(""); };
+  const selectFile = (event: ChangeEvent<HTMLInputElement>) => { setFile(event.target.files?.[0] ?? null); setStatus("idle"); setError(""); if (result) URL.revokeObjectURL(result.url); setResult(null); };
 
   const convert = async () => {
     if (!file) return;
@@ -55,14 +56,12 @@ export function ConverterPage({ kind }: { kind: ConverterKind }) {
         throw new Error([result?.error, result?.details].filter(Boolean).join("\n\n") || "Conversion failed");
       }
       const download = URL.createObjectURL(await response.blob());
-      const link = document.createElement("a");
-      link.href = download;
-      link.download = response.headers.get("x-output-filename") ?? `${file.name}.converted`;
-      link.click();
-      URL.revokeObjectURL(download);
+      setResult({ url: download, filename: response.headers.get("x-output-filename") ?? `${file.name}.converted` });
       setStatus("idle");
     } catch (conversionError) { setError(conversionError instanceof Error ? conversionError.message : text.error); setStatus("error"); }
   };
+
+  if (result) return <main id="top"><Header language={language} onLanguageChange={changeLanguage} copy={{ navigation: text.navigation, languageLabel: text.languageLabel} } /><section className="conversion-result section-shell"><span className="result-check">✓</span><p className="label">{text.success}</p><h1>{text.success}</h1><p>{text.successText}</p><a className="button button-primary" href={result.url} download={result.filename}>{kind === "pdf-to-word" ? text.downloadWord : text.downloadPdf} <ArrowRight /></a><button className="result-reset" onClick={() => { URL.revokeObjectURL(result.url); setResult(null); setFile(null); }}>{text.another}</button></section><Footer copy={text.footer} /></main>;
 
   return <main id="top"><Header language={language} onLanguageChange={changeLanguage} copy={{ navigation: text.navigation, languageLabel: text.languageLabel }} />
     <section className="converter-page section-shell"><a className="back-link" href={`/?lang=${language}#tools`}>← {text.back}</a><p className="label">{text.uploadLabel}</p><h1>{tool.title}</h1><p className="converter-intro">{tool.intro}</p>
