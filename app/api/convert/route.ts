@@ -2,6 +2,7 @@ import { execFile } from "child_process";
 import { mkdtemp, readFile, rm, writeFile } from "fs/promises";
 import { tmpdir } from "os";
 import path from "path";
+import { pathToFileURL } from "url";
 import { promisify } from "util";
 
 export const runtime = "nodejs";
@@ -28,11 +29,16 @@ export async function POST(request: Request) {
   try {
     await writeFile(path.join(workDir, inputName), Buffer.from(await file.arrayBuffer()));
     const convertFilter = kind === "pdf-to-word" ? "docx:Office Open XML Text" : "pdf:writer_pdf_Export";
-    await run(officeBinary, ["--headless", "--convert-to", convertFilter, "--outdir", workDir, path.join(workDir, inputName)], { timeout: 120000, windowsHide: true });
+    const profileUrl = pathToFileURL(path.join(workDir, "libreoffice-profile")).href;
+    await run(officeBinary, [`-env:UserInstallation=${profileUrl}`, "--headless", "--convert-to", convertFilter, "--outdir", workDir, path.join(workDir, inputName)], { timeout: 120000, windowsHide: true });
     const output = await readFile(path.join(workDir, outputName));
     const downloadName = `${path.basename(file.name, extension)}.${outputType}`;
     return new Response(output, { headers: { "Content-Type": outputType === "pdf" ? "application/pdf" : "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "Content-Disposition": `attachment; filename="${downloadName}"`, "X-Output-Filename": downloadName } });
-  } catch {
-    return Response.json({ error: "Conversion is unavailable." }, { status: 503 });
+  } catch (error) {
+    console.error("Knight Wisdom conversion failed", error);
+    const message = error instanceof Error && "code" in error && error.code === "ENOENT"
+      ? "LibreOffice is not available to the website service."
+      : "The converter could not process this file. Please check the server logs and try again.";
+    return Response.json({ error: message }, { status: 503 });
   } finally { await rm(workDir, { recursive: true, force: true }); }
 }

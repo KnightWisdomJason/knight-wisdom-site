@@ -27,6 +27,7 @@ export function ConverterPage({ kind }: { kind: ConverterKind }) {
   const [language, setLanguage] = useState<Language>("en");
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "converting" | "error">("idle");
+  const [error, setError] = useState("");
   const text = copy[language];
   const tool = text[kind];
 
@@ -38,7 +39,7 @@ export function ConverterPage({ kind }: { kind: ConverterKind }) {
   }, []);
 
   const changeLanguage = (next: Language) => { window.localStorage.setItem("knightwisdom-language", next); document.documentElement.lang = next; setLanguage(next); };
-  const selectFile = (event: ChangeEvent<HTMLInputElement>) => { setFile(event.target.files?.[0] ?? null); setStatus("idle"); };
+  const selectFile = (event: ChangeEvent<HTMLInputElement>) => { setFile(event.target.files?.[0] ?? null); setStatus("idle"); setError(""); };
 
   const convert = async () => {
     if (!file) return;
@@ -48,7 +49,10 @@ export function ConverterPage({ kind }: { kind: ConverterKind }) {
     body.append("kind", kind);
     try {
       const response = await fetch("/api/convert", { method: "POST", body });
-      if (!response.ok) throw new Error("Conversion failed");
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error ?? "Conversion failed");
+      }
       const download = URL.createObjectURL(await response.blob());
       const link = document.createElement("a");
       link.href = download;
@@ -56,13 +60,13 @@ export function ConverterPage({ kind }: { kind: ConverterKind }) {
       link.click();
       URL.revokeObjectURL(download);
       setStatus("idle");
-    } catch { setStatus("error"); }
+    } catch (conversionError) { setError(conversionError instanceof Error ? conversionError.message : text.error); setStatus("error"); }
   };
 
   return <main id="top"><Header language={language} onLanguageChange={changeLanguage} copy={{ navigation: text.navigation, languageLabel: text.languageLabel }} />
     <section className="converter-page section-shell"><a className="back-link" href="/#tools">← {text.back}</a><p className="label">{text.uploadLabel}</p><h1>{tool.title}</h1><p className="converter-intro">{tool.intro}</p>
       <label className={`upload-panel ${file ? "has-file" : ""}`}><input type="file" accept={tool.accept} onChange={selectFile} /><span className="upload-icon">↑</span><strong>{file ? file.name : text.drop}</strong><span>{file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : text.supported}</span><em>{text.choose}</em></label>
-      <p className="file-hint">{tool.fileHint}</p>{status === "error" && <p className="converter-error">{text.error}</p>}
+      <p className="file-hint">{tool.fileHint}</p>{status === "error" && <p className="converter-error">{error || text.error}</p>}
       <button className="button button-primary convert-button" disabled={!file || status === "converting"} onClick={convert}>{status === "converting" ? text.converting : text.convert} <ArrowRight /></button>
       <p className="converter-privacy">{text.privacy}</p>
     </section><Footer copy={text.footer} /></main>;
