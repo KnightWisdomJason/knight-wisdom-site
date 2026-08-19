@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
 import Script from "next/script";
+import { Suspense } from "react";
+import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
+import "./theme.css";
 
 const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://knightwisdom.com";
@@ -18,7 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
   return <html lang="en"><body className={geist.variable}>
     {adsenseClientId ? <Script async strategy="afterInteractive" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`} crossOrigin="anonymous" /> : null}
-    <header className="site-header"><Link className="brand" href="/"><span>✦</span> KnightWisdom</Link><nav aria-label="Primary navigation"><Link href="/">All tools</Link><Link href="/#text">Text</Link><Link href="/#developer">Developer</Link><Link href="/#encoding">Encoding</Link></nav></header>
+    <Suspense fallback={<header className="site-header"><Link className="brand" href="/"><span>✦</span> KnightWisdom</Link></header>}><SiteHeader /></Suspense>
     {children}
     <footer className="site-footer"><Link className="brand" href="/"><span>✦</span> KnightWisdom</Link><p>Fast, free, privacy-friendly online tools.</p><nav><Link href="/about">About</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/contact">Contact</Link></nav></footer>
   </body></html>;
