@@ -1,37 +1,20 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { ToolDirectory } from "@/components/tool-directory";
+import { tools } from "@/lib/tools";
 
 export default function Home() {
-  const [opening, setOpening] = useState(false);
-  const router = useRouter();
-
-  const openDoor = () => {
-    if (opening) return;
-    setOpening(true);
-    setTimeout(() => {
-      router.push("/tavern");
-    }, 1500);
-  };
-
   return (
-    <main className="landing-scene">
-      <div className="mist" />
-      <div className="torch torch-left" />
-      <div className="torch torch-right" />
-
-      <section className="hero-panel">
-        <p className="hero-eyebrow">Knight Wisdom</p>
-        <h1 className="hero-title">中世纪古堡 Club · NFT 世界入口</h1>
-        <p className="hero-desc">推开大门，进入骑士俱乐部。</p>
+    <main>
+      <section className="hero">
+        <p className="eyebrow">KNIGHTWISDOM TOOLS</p>
+        <h1>Every tool you need, in one place.</h1>
+        <p className="hero-copy">Fast, free, privacy-friendly online tools that work right in your browser.</p>
       </section>
-
-      <button onClick={openDoor} className="door-wrap" aria-label="Enter the tavern">
-        <span className="door-frame" />
-        <span className={`door leaf left ${opening ? "open" : ""}`} />
-        <span className={`door leaf right ${opening ? "open" : ""}`} />
-      </button>
+      <ToolDirectory tools={tools} />
+      <section className="trust-grid" aria-label="Why use KnightWisdom Tools">
+        <article><h2>Fast by design</h2><p>Open a tool, paste your content, and get the result immediately.</p></article>
+        <article><h2>Privacy-friendly</h2><p>The current text and developer tools process your input locally in your browser.</p></article>
+        <article><h2>Free to use</h2><p>No account, download, or complicated setup is needed for these everyday tools.</p></article>
+      </section>
     </main>
   );
 }

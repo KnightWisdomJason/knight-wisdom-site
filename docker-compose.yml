@@ -1,0 +1,11 @@
+services:
+  knightwisdom-tools:
+    build: .
+    container_name: knightwisdom-tools
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${TOOLS_PORT:-3085}:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://knightwisdom.com}
+      ADSENSE_PUBLISHER_ID: ${ADSENSE_PUBLISHER_ID:-}
