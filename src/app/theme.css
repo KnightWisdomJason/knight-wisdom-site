@@ -15,6 +15,9 @@ body { background:radial-gradient(ellipse at 50% -20%,#5e2445 0,transparent 43%)
 .workspace textarea { background:#1b1720; }
 [data-theme="light"] { --bg:#fbe8f1; --surface:#fff7fb; --surface-2:#f6d5e5; --text:#21151c; --muted:#6e5661; --line:#dfb9ca; --pink:#d83281; --pink-soft:#b71f69; }
 [data-theme="light"] { background:radial-gradient(ellipse at 50% -20%,#f7b8d3 0,transparent 43%),var(--bg); min-height:100vh; }
+[data-theme="light"],[data-theme="light"] * { color:#21151c; }
+[data-theme="light"] input::placeholder,[data-theme="light"] textarea::placeholder { color:#705d67; opacity:1; }
+[data-theme="light"] .brand span,[data-theme="light"] .tool-icon,[data-theme="light"] .arrow { color:#a9155e; }
 [data-theme="light"] .tool-card { background:linear-gradient(145deg,#fffaff,#f8dfe9); }
 [data-theme="light"] .tool-card:hover { background:#f4d0df; border-color:#d478a4; }
 [data-theme="light"] .header-search { background:rgba(255,255,255,.65); border-color:#e5bfd1; }
