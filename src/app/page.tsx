@@ -1,37 +1,7 @@
 "use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
-export default function Home() {
-  const [opening, setOpening] = useState(false);
-  const router = useRouter();
-
-  const openDoor = () => {
-    if (opening) return;
-    setOpening(true);
-    setTimeout(() => {
-      router.push("/tavern");
-    }, 1500);
-  };
-
-  return (
-    <main className="landing-scene">
-      <div className="mist" />
-      <div className="torch torch-left" />
-      <div className="torch torch-right" />
-
-      <section className="hero-panel">
-        <p className="hero-eyebrow">Knight Wisdom</p>
-        <h1 className="hero-title">中世纪古堡 Club · NFT 世界入口</h1>
-        <p className="hero-desc">推开大门，进入骑士俱乐部。</p>
-      </section>
-
-      <button onClick={openDoor} className="door-wrap" aria-label="Enter the tavern">
-        <span className="door-frame" />
-        <span className={`door leaf left ${opening ? "open" : ""}`} />
-        <span className={`door leaf right ${opening ? "open" : ""}`} />
-      </button>
-    </main>
-  );
-}
+import { Suspense } from "react";
+import { ToolDirectory } from "@/components/tool-directory";
+import { tools } from "@/lib/tools";
+import { usePreferences } from "@/components/preferences";
+import { DirectoryIntro } from "@/components/directory-intro";
+export default function Home() { const { t } = usePreferences(); return <main><DirectoryIntro /><Suspense fallback={<div className="directory" />}><ToolDirectory tools={tools} /></Suspense><section className="trust-grid" aria-label={t("Why use KnightWisdom Tools", "为什么选择 KnightWisdom Tools")}><article><h2>{t("Fast by design", "快速易用")}</h2><p>{t("Open a tool, paste your content, and get the result immediately.", "打开工具、粘贴内容，即刻获得结果。")}</p></article><article><h2>{t("Privacy-friendly", "注重隐私")}</h2><p>{t("The current text and developer tools process your input locally in your browser.", "当前文本和开发工具会在你的浏览器本地处理输入。")}</p></article><article><h2>{t("Free to use", "免费使用")}</h2><p>{t("No account, download, or complicated setup is needed for these everyday tools.", "这些日常工具无需注册、下载或复杂设置。")}</p></article></section></main>; }
