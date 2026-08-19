@@ -4,6 +4,8 @@ import Link from "next/link";
 import Script from "next/script";
 import { Suspense } from "react";
 import { SiteHeader } from "@/components/site-header";
+import { PreferencesProvider } from "@/components/preferences";
+import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 import "./theme.css";
 
@@ -19,10 +21,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
-  return <html lang="en"><body className={geist.variable}>
+  return <html lang="en"><body className={geist.variable}><PreferencesProvider>
     {adsenseClientId ? <Script async strategy="afterInteractive" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`} crossOrigin="anonymous" /> : null}
     <Suspense fallback={<header className="site-header"><Link className="brand" href="/"><span>✦</span> KnightWisdom</Link></header>}><SiteHeader /></Suspense>
     {children}
-    <footer className="site-footer"><Link className="brand" href="/"><span>✦</span> KnightWisdom</Link><p>Fast, free, privacy-friendly online tools.</p><nav><Link href="/about">About</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/contact">Contact</Link></nav></footer>
-  </body></html>;
+    <SiteFooter />
+  </PreferencesProvider></body></html>;
 }

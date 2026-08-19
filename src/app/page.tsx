@@ -1,21 +1,6 @@
+"use client";
+import { Suspense } from "react";
 import { ToolDirectory } from "@/components/tool-directory";
 import { tools } from "@/lib/tools";
-import { Suspense } from "react";
-
-export default function Home() {
-  return (
-    <main>
-      <section className="hero">
-        <p className="eyebrow">KNIGHTWISDOM TOOLS</p>
-        <h1>Every tool you need, in one place.</h1>
-        <p className="hero-copy">Fast, free, privacy-friendly online tools that work right in your browser.</p>
-      </section>
-      <Suspense fallback={<div className="directory" />}><ToolDirectory tools={tools} /></Suspense>
-      <section className="trust-grid" aria-label="Why use KnightWisdom Tools">
-        <article><h2>Fast by design</h2><p>Open a tool, paste your content, and get the result immediately.</p></article>
-        <article><h2>Privacy-friendly</h2><p>The current text and developer tools process your input locally in your browser.</p></article>
-        <article><h2>Free to use</h2><p>No account, download, or complicated setup is needed for these everyday tools.</p></article>
-      </section>
-    </main>
-  );
-}
+import { usePreferences } from "@/components/preferences";
+export default function Home() { const { t } = usePreferences(); return <main><Suspense fallback={<div className="directory" />}><ToolDirectory tools={tools} /></Suspense><section className="trust-grid" aria-label={t("Why use KnightWisdom Tools", "为什么选择 KnightWisdom Tools")}><article><h2>{t("Fast by design", "快速易用")}</h2><p>{t("Open a tool, paste your content, and get the result immediately.", "打开工具、粘贴内容，即刻获得结果。")}</p></article><article><h2>{t("Privacy-friendly", "注重隐私")}</h2><p>{t("The current text and developer tools process your input locally in your browser.", "当前文本和开发工具会在你的浏览器本地处理输入。")}</p></article><article><h2>{t("Free to use", "免费使用")}</h2><p>{t("No account, download, or complicated setup is needed for these everyday tools.", "这些日常工具无需注册、下载或复杂设置。")}</p></article></section></main>; }

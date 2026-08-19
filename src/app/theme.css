@@ -5,10 +5,19 @@ body { background:radial-gradient(ellipse at 50% -20%,#5e2445 0,transparent 43%)
 .header-search { display:flex; align-items:center; gap:8px; max-width:310px; flex:1; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.1); padding:0 11px; border-radius:10px; }
 .header-search span { font-size:1.2rem; color:var(--pink-soft); }
 .header-search input { height:39px; background:transparent; color:var(--text); border:0; outline:0; width:100%; font-size:.84rem; }
-.site-header nav { gap:20px; white-space:nowrap; }
+.site-header nav { margin-left:auto; gap:20px; white-space:nowrap; }
 .site-header nav a.selected { color:var(--pink-soft); }
 .language-select select { appearance:none; border:1px solid rgba(255,255,255,.13); border-radius:9px; background:#302a36; color:var(--text); padding:8px 10px; font-size:.8rem; cursor:pointer; }
+.header-controls { display:flex; align-items:center; gap:8px; margin-left:4px; }
+.theme-toggle { display:flex; align-items:center; gap:5px; border:1px solid rgba(255,255,255,.13); border-radius:9px; background:#302a36; color:var(--text); padding:8px 10px; font-size:.8rem; cursor:pointer; }
 .tool-card { background:linear-gradient(145deg,#2a2530,#201c26); }
 .tool-card:hover { border-color:#aa6688; background:#342a35; }
 .workspace textarea { background:#1b1720; }
-@media(max-width:760px) { .site-header { padding:14px 16px; gap:10px; flex-wrap:wrap; } .header-search { order:4; flex-basis:100%; max-width:none; } }
+[data-theme="light"] { --bg:#fbe8f1; --surface:#fff7fb; --surface-2:#f6d5e5; --text:#21151c; --muted:#6e5661; --line:#dfb9ca; --pink:#d83281; --pink-soft:#b71f69; }
+[data-theme="light"] { background:radial-gradient(ellipse at 50% -20%,#f7b8d3 0,transparent 43%),var(--bg); min-height:100vh; }
+[data-theme="light"] .tool-card { background:linear-gradient(145deg,#fffaff,#f8dfe9); }
+[data-theme="light"] .tool-card:hover { background:#f4d0df; border-color:#d478a4; }
+[data-theme="light"] .header-search { background:rgba(255,255,255,.65); border-color:#e5bfd1; }
+[data-theme="light"] .language-select select,[data-theme="light"] .theme-toggle { background:#f6d5e5; color:#21151c; border-color:#deb4c8; }
+[data-theme="light"] .workspace textarea { background:#fffafd; }
+@media(max-width:760px) { .site-header { padding:14px 16px; gap:10px; flex-wrap:wrap; } .header-search { order:4; flex-basis:100%; max-width:none; } .site-header nav { margin-left:auto; } .theme-toggle span { display:none; } }
