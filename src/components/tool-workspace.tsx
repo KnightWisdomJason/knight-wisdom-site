@@ -3,9 +3,14 @@ import { useMemo, useState } from "react";
 import { convertCase, decodeBase64, encodeBase64, formatJson, getTextStats } from "@/lib/transformations";
 import type { Tool } from "@/lib/tools";
 import { usePreferences } from "@/components/preferences";
+import { DocumentConverter } from "@/components/document-converter";
 
 const cases = [["upper", "UPPERCASE"], ["lower", "lowercase"], ["title", "Title Case"], ["sentence", "Sentence case"], ["camel", "camelCase"], ["pascal", "PascalCase"], ["snake", "snake_case"], ["kebab", "kebab-case"]] as const;
 export function ToolWorkspace({ tool }: { tool: Tool }) {
+  if (tool.slug === "word-to-pdf" || tool.slug === "pdf-to-word") return <DocumentConverter tool={tool} />;
+  return <TextWorkspace tool={tool} />;
+}
+function TextWorkspace({ tool }: { tool: Tool }) {
   const { t } = usePreferences(); const [input, setInput] = useState(""); const [output, setOutput] = useState(""); const [status, setStatus] = useState<string | null>(null); const stats = useMemo(() => getTextStats(input), [input]);
   const clear = () => { setInput(""); setOutput(""); setStatus(null); };
   const copy = async (value: string) => { if (!value) return; await navigator.clipboard.writeText(value); setStatus("Copied to clipboard."); };

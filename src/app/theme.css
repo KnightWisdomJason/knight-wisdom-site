@@ -16,6 +16,13 @@ body { background:radial-gradient(ellipse at 50% -20%,#5e2445 0,transparent 43%)
 .directory-intro > p:last-child { max-width:570px; margin:12px auto 0; color:var(--muted); line-height:1.6; font-size:.96rem; }
 .tool-card:hover { border-color:#aa6688; background:#342a35; }
 .workspace textarea { background:#1b1720; }
+.file-workspace { text-align:center; }
+.file-drop { border:1px dashed var(--line); border-radius:12px; padding:28px; background:rgba(255,255,255,.025); }
+.file-drop input { position:absolute; inline-size:1px; block-size:1px; opacity:0; }
+.file-drop label { display:grid; gap:8px; cursor:pointer; }
+.file-drop label strong { font-size:1rem; }
+.file-drop label span { color:var(--muted); font-size:.85rem; }
+.convert-button { margin:16px auto 0; }
 [data-theme="light"] { --bg:#fbe8f1; --surface:#fff7fb; --surface-2:#f6d5e5; --text:#21151c; --muted:#6e5661; --line:#dfb9ca; --pink:#d83281; --pink-soft:#b71f69; }
 [data-theme="light"] { background:radial-gradient(ellipse at 50% -20%,#f7b8d3 0,transparent 43%),var(--bg); min-height:100vh; }
 [data-theme="light"],[data-theme="light"] * { color:#21151c; }
