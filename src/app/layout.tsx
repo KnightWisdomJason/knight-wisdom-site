@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
-import Script from "next/script";
 import { Suspense } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { PreferencesProvider } from "@/components/preferences";
@@ -21,8 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-273449079736693";
-  return <html lang="en"><body className={geist.variable}><PreferencesProvider>
-    {adsenseClientId ? <Script async strategy="afterInteractive" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`} crossOrigin="anonymous" /> : null}
+  return <html lang="en"><head>{adsenseClientId ? <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`} crossOrigin="anonymous" /> : null}</head><body className={geist.variable}><PreferencesProvider>
     <Suspense fallback={<header className="site-header"><Link className="brand" href="/"><span>✦</span> KnightWisdom</Link></header>}><SiteHeader /></Suspense>
     {children}
     <SiteFooter />
