@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+  const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-273449079736693";
   return <html lang="en"><body className={geist.variable}><PreferencesProvider>
     {adsenseClientId ? <Script async strategy="afterInteractive" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`} crossOrigin="anonymous" /> : null}
     <Suspense fallback={<header className="site-header"><Link className="brand" href="/"><span>✦</span> KnightWisdom</Link></header>}><SiteHeader /></Suspense>
