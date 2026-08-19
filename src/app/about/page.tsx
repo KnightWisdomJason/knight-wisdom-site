@@ -1,2 +1,1 @@
-export const metadata = { title: "About" };
-export default function About() { return <main className="prose"><h1>About KnightWisdom Tools</h1><p>KnightWisdom Tools is a growing collection of straightforward online tools for everyday text and developer tasks.</p><h2>Our approach</h2><p>Useful tools should be quick to open, easy to understand, and respectful of your privacy. The tools currently available process your input directly in your browser whenever possible.</p></main>; }
+import { LegalPage } from "@/components/legal-page"; export const metadata = { title: "About" }; export default function About() { return <LegalPage page="about" />; }
